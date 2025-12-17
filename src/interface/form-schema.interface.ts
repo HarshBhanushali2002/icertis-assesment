@@ -27,8 +27,8 @@ export interface FieldOption {
 }
 
 export interface ConditionalRule {
-  dependsOn: string;
-  condition: "equals" | "notEquals" | "contains" | "greaterThan" | "lessThan";
+  fieldId: string;
+  operator: "equals" | "notEquals" | "contains" | "greaterThan" | "lessThan";
   value: string | number | boolean;
 }
 
@@ -46,7 +46,7 @@ export interface FormField {
 }
 
 export interface FormSchema {
-//   id: string;
+  id: string;
   title: string;
   description?: string;
   fields: FormField[];

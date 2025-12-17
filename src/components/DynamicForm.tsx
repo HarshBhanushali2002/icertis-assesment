@@ -72,7 +72,7 @@ export const DynamicFormBuilder = ({ schema, onSubmit }: DynamicFormProps) => {
     try {
       await onSubmit(formData);
       setIsSubmitted(true);
-      alert(JSON.stringify(formData, null, 2))
+    //   alert(JSON.stringify(formData, null, 2));
     } catch (error) {
       console.error("Form submission error:", error);
     } finally {
@@ -96,8 +96,6 @@ export const DynamicFormBuilder = ({ schema, onSubmit }: DynamicFormProps) => {
   const visibleFields = schema.fields.filter((field) =>
     checkConditionalVisibility(field, formData)
   );
-
-  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
@@ -128,6 +126,19 @@ export const DynamicFormBuilder = ({ schema, onSubmit }: DynamicFormProps) => {
                 <pre className="text-sm text-gray-600 overflow-auto">
                   {JSON.stringify(formData, null, 2)}
                 </pre>
+              </div>
+              <div className="mt-6 flex gap-4">
+                <button
+                  type="submit"
+                  onClick={() => {
+                    handleReset();
+                    setIsSubmitting(false);
+                    setIsSubmitted(false);
+                  }}
+                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  {"Submit Another Response"}
+                </button>
               </div>
             </div>
           ) : (
@@ -161,15 +172,6 @@ export const DynamicFormBuilder = ({ schema, onSubmit }: DynamicFormProps) => {
             </div>
           )}
         </div>
-
-        {/* <div className="mt-6 bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">
-            Current Form State:
-          </h3>
-          <pre className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 overflow-auto max-h-64">
-            {JSON.stringify(formData, null, 2)}
-          </pre>
-        </div> */}
       </div>
     </div>
   );

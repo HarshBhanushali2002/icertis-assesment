@@ -1,8 +1,9 @@
 import { FormSchema } from "@/interface/form-schema.interface";
 
 export const sampleSchema: FormSchema = {
+  id: "sample-form",
   title: "User Registration Form",
-  description: "Please fill out all required fields",
+  description: "Please fill out the form below to register for our service.",
   fields: [
     {
       id: "firstName",
@@ -11,16 +12,14 @@ export const sampleSchema: FormSchema = {
       placeholder: "Enter your first name",
       required: true,
       validation: [
-        { type: "required", message: "First name is required" },
+        {
+          type: "required",
+          message: "First name is required",
+        },
         {
           type: "minLength",
           value: 2,
-          message: "Must be at least 2 characters",
-        },
-        {
-          type: "maxLength",
-          value: 50,
-          message: "Must be less than 50 characters",
+          message: "First name must be at least 2 characters",
         },
       ],
     },
@@ -31,28 +30,28 @@ export const sampleSchema: FormSchema = {
       placeholder: "Enter your last name",
       required: true,
       validation: [
-        { type: "required", message: "Last name is required" },
         {
-          type: "minLength",
-          value: 2,
-          message: "Must be at least 2 characters",
-        },
-        {
-          type: "maxLength",
-          value: 50,
-          message: "Must be less than 50 characters",
+          type: "required",
+          message: "Last name is required",
         },
       ],
     },
     {
       id: "email",
-      type: "email",
+      type: "text",
       label: "Email Address",
-      placeholder: "your.email@example.com",
+      placeholder: "Enter your email address",
       required: true,
       validation: [
-        { type: "required", message: "Email is required" },
-        { type: "email", message: "Please enter a valid email address" },
+        {
+          type: "required",
+          message: "Email is required",
+        },
+        {
+          type: "pattern",
+          value: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+          message: "Please enter a valid email address",
+        },
       ],
     },
     {
@@ -60,98 +59,91 @@ export const sampleSchema: FormSchema = {
       type: "number",
       label: "Age",
       placeholder: "Enter your age",
-      required: true,
       validation: [
-        { type: "required", message: "Age is required" },
-        { type: "min", value: 18, message: "Must be at least 18 years old" },
-        { type: "max", value: 120, message: "Please enter a valid age" },
+        {
+          type: "min",
+          value: 18,
+          message: "You must be at least 18 years old",
+        },
+        {
+          type: "max",
+          value: 120,
+          message: "Please enter a valid age",
+        },
       ],
     },
     {
-      id: "country",
+      id: "userType",
       type: "select",
-      label: "Country",
+      label: "User Type",
       required: true,
       options: [
-        { value: "", label: "Select a country" },
-        { value: "us", label: "United States" },
-        { value: "uk", label: "United Kingdom" },
-        { value: "ca", label: "Canada" },
-        { value: "au", label: "Australia" },
-        { value: "in", label: "India" },
+        {
+          value: "",
+          label: "Select an Option",
+        },
+        {
+          value: "individual",
+          label: "Individual",
+        },
+        {
+          value: "business",
+          label: "Business",
+        },
+        {
+          value: "student",
+          label: "Student",
+        },
       ],
-      validation: [{ type: "required", message: "Please select a country" }],
+      validation: [
+        {
+          type: "required",
+          message: "Please select a user type",
+        },
+      ],
     },
     {
-      id: "state",
+      id: "companyName",
       type: "text",
-      label: "State/Province",
-      placeholder: "Enter your state",
+      label: "Company Name",
+      placeholder: "Enter your company name",
       conditional: {
-        dependsOn: "country",
-        condition: "equals",
-        value: "us",
+        fieldId: "userType",
+        operator: "equals",
+        value: "business",
       },
-       validation: [
-        { type: "required", message: "This Field is required" },
+      validation: [
         {
-          type: "minLength",
-          value: 2,
-          message: "Must be at least 2 characters",
-        },
-        {
-          type: "maxLength",
-          value: 50,
-          message: "Must be less than 50 characters",
+          type: "required",
+          message: "Company name is required for business users",
         },
       ],
     },
     {
-      id: "subscribe",
+      id: "newsletter",
       type: "checkbox",
       label: "Subscribe to newsletter",
       defaultValue: false,
     },
     {
-      id: "interests",
-      type: "select",
-      label: "Primary Interest",
-      conditional: {
-        dependsOn: "subscribe",
-        condition: "equals",
-        value: true,
-      },
-      options: [
-        { value: "", label: "Select an interest" },
-        { value: "tech", label: "Technology" },
-        { value: "business", label: "Business" },
-        { value: "design", label: "Design" },
-        { value: "marketing", label: "Marketing" },
-      ],
-    },
-    {
-      id: "birthdate",
+      id: "birthDate",
       type: "date",
-      label: "Date of Birth",
-      required: true,
-      validation: [{ type: "required", message: "Birth date is required" }],
+      label: "Birth Date",
+      conditional: {
+        fieldId: "userType",
+        operator: "equals",
+        value: "individual",
+      },
     },
     {
-      id: "comments",
-      type: "textarea",
-      label: "Additional Comments",
-      placeholder: "Any additional information...",
-       validation: [
-        // { type: "required", message: "Last name is required" },
+      id: "terms",
+      type: "checkbox",
+      label: "I agree to the terms and conditions",
+      required: true,
+      validation: [
         {
-          type: "minLength",
-          value: 1,
-          message: "Must be at least 1 characters",
-        },
-        {
-          type: "maxLength",
-          value: 150,
-          message: "Must be less than 150 characters",
+          type: "required",
+          message: "You must agree to the terms and conditions",
         },
       ],
     },

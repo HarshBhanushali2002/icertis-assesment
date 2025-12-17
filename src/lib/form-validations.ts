@@ -4,7 +4,7 @@ export function validateField(
   field: FormField,
   value: string | number | boolean | undefined
 ): string | null {
-  if (field.id === "birthdate" && value) {
+  if (field.id === "birthDate" && value) {
     const today = new Date();
     const birthDate = new Date(value as string);
     if (birthDate > today) {
@@ -101,10 +101,10 @@ export function checkConditionalVisibility(
 ): boolean {
   if (!field.conditional) return true;
 
-  const { dependsOn, condition, value } = field.conditional;
-  const dependentValue = formData[dependsOn];
+  const { fieldId, operator, value } = field.conditional;
+  const dependentValue = formData[fieldId];
 
-  switch (condition) {
+  switch (operator) {
     case "equals":
       return dependentValue === value;
     case "notEquals":
