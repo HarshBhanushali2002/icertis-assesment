@@ -4,7 +4,7 @@ export function validateField(
   field: FormField,
   value: string | number | boolean | undefined
 ): string | null {
-  if (field.id === "birthDate" && value) {
+  if (field.id === "birthDate" && value && value !== "") {
     const today = new Date();
     const birthDate = new Date(value as string);
     if (birthDate > today) {
@@ -31,15 +31,14 @@ export function validateField(
 
     switch (rule.type) {
       case "required":
-        if (value === undefined || value === "" || value === null) {
-          return rule.message;
-        }
-        break;
-
-      case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (stringValue && !emailRegex.test(stringValue)) {
-          return rule.message;
+        if (field.type === "checkbox") {
+          if (!value) {
+            return rule.message;
+          }
+        } else {
+          if (value === undefined || value === "" || value === null) {
+            return rule.message;
+          }
         }
         break;
 

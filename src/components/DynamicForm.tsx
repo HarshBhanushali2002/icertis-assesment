@@ -72,7 +72,7 @@ export const DynamicFormBuilder = ({ schema, onSubmit }: DynamicFormProps) => {
     try {
       await onSubmit(formData);
       setIsSubmitted(true);
-    //   alert(JSON.stringify(formData, null, 2));
+      //   alert(JSON.stringify(formData, null, 2));
     } catch (error) {
       console.error("Form submission error:", error);
     } finally {
@@ -96,6 +96,9 @@ export const DynamicFormBuilder = ({ schema, onSubmit }: DynamicFormProps) => {
   const visibleFields = schema.fields.filter((field) =>
     checkConditionalVisibility(field, formData)
   );
+
+  const disableSave =
+    isSubmitting || (errors && Object.keys(errors).length > 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
@@ -137,7 +140,7 @@ export const DynamicFormBuilder = ({ schema, onSubmit }: DynamicFormProps) => {
                   }}
                   className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  {"Submit Another Response"}
+                  Submit Another Response
                 </button>
               </div>
             </div>
@@ -157,12 +160,19 @@ export const DynamicFormBuilder = ({ schema, onSubmit }: DynamicFormProps) => {
                 <button
                   type="submit"
                   onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  disabled={disableSave}
+                  className={`flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                    hover:bg-blue-700
+                    ${
+                      disableSave
+                        ? "opacity-50 cursor-not-allowed pointer-events-none"
+                        : ""
+                    }`}
                 >
                   {isSubmitting ? "Submitting..." : "Submit Form"}
                 </button>
                 <button
+                  type="button"
                   onClick={handleReset}
                   className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                 >
